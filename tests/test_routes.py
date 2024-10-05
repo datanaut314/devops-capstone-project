@@ -134,13 +134,13 @@ class TestAccountService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
         self.assertEqual(data["name"], account.name)
-    
+
     # sad path Read - not found
     def test_get_account_not_found(self):
         """It should not Read an Account that is not found"""
         resp = self.client.get(f"{BASE_URL}/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
-    
+
     def test_get_account_list(self):
         """It should Get a list of Accounts"""
         self._create_accounts(5)
@@ -158,27 +158,27 @@ class TestAccountService(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         # update the account
-        
+
         # get the data from resp.get_json() as new_account
         new_account = resp.get_json()
         # change new_account["name"] to something known
         new_account["name"] = "Fred Flintstone"
         # send a self.client.put() request to the BASE_URL with a json payload of new_account
-        resp = self.client.put(f"{BASE_URL}/{new_account['id']}",json=new_account)
+        resp = self.client.put(f"{BASE_URL}/{new_account['id']}", json=new_account)
         # assert that the resp.status_code is status.HTTP_200_OK
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         # get the data from resp.get_json() as updated_account
         updated_account = resp.get_json()
         # assert that the updated_account["name"] is whatever you changed it to
         self.assertEqual(updated_account["name"], "Fred Flintstone")
-    
+
     def test_delete_account(self):
         """It should Delete an Account"""
         account = self._create_accounts(1)[0]
         # send a self.client.delete() request to the BASE_URL with an id of an account
         resp = self.client.delete(f"{BASE_URL}/{account.id}")
         # assert that the resp.status_code is status.HTTP_204_NO_CONTENT
-        self.assertEqual(resp.status_code,status.HTTP_204_NO_CONTENT)
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_method_not_allowed(self):
         """It should not allow an illegal method call"""
